@@ -1,0 +1,12 @@
+.idea/*
+*.swp
+*.class
+*.iml
+*.ipr
+*.iws
+.gradle
+*.jar
+.project
+.settings
+target/*
+build/*
