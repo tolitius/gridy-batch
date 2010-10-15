@@ -7,29 +7,30 @@
 
 	<job id="job" xmlns="http://www.springframework.org/schema/batch">
 		<step id="step-master">
-			<partition handler="partitionHandler" step="step"
-				partitioner="partitioner" />
+			<partition handler="partitionHandler" step="step" partitioner="partitioner"/>
 		</step>
 	</job>
 
 	<bean id="partitionHandler"
-		class="org.springframework.batch.core.partition.gridgain.GridGainPartitionHandler" />
+		  class="org.springframework.batch.core.partition.gridgain.GridGainPartitionHandler" />
 
 	<bean id="partitioner"
-		class="org.opensourcebank.batch.partition.ArrayPartitioner" />
+		  class="org.opensourcebank.batch.partition.HazelcastMapPartitioner">
+        <property name="mapName" value="${batch.hazelcast.map.name}"/>
+    </bean>
 
 	<step id="step" xmlns="http://www.springframework.org/schema/batch">
 		<tasklet>
-			<chunk commit-interval="2">
+			<chunk commit-interval="5">
 				<reader>
-					<beans:bean class="org.opensourcebank.batch.reader.ExampleItemReader" scope="step">
-                        <beans:property name="fromIndex" value="#{stepExecutionContext[fromIndex]}"/>
-                        <beans:property name="toIndex" value="#{stepExecutionContext[toIndex]}"/>
+					<beans:bean class="org.opensourcebank.batch.reader.HazelcastMapItemReader" scope="step">
+                        <beans:property name="mapName" value="#{stepExecutionContext[mapName]}"/>                        
+                        <beans:property name="fromId" value="#{stepExecutionContext[fromId]}"/>
+                        <beans:property name="toId" value="#{stepExecutionContext[toId]}"/>
                     </beans:bean>
 				</reader>
 				<writer>
-					<beans:bean
-						class="org.opensourcebank.batch.writer.ExampleItemWriter" />
+					<beans:bean class="org.opensourcebank.batch.writer.OfflineTransactionItemWriter" />
 				</writer>
 			</chunk>
 		</tasklet>

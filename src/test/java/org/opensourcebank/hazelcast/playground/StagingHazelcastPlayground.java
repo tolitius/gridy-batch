@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensourcebank.transaction.processor;
+package org.opensourcebank.hazelcast.playground;
 
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
@@ -33,7 +33,7 @@ import java.util.Map;
  * @author anatoly.polinsky
  */
 
-public class OfflineTransactionProcessingIntegrationMain {
+public class StagingHazelcastPlayground {
 
 	static {
     	System.setProperty( "GRIDGAIN_HOME", "/opt/gridgain" );
@@ -58,7 +58,7 @@ public class OfflineTransactionProcessingIntegrationMain {
         Long txId = 0L;
 
         stagingItemReader.open( new ExecutionContext() );
-        
+
         while ( ( tx = stagingItemReader.read() ) != null) {
             txMap.put( txId++, tx );
         }

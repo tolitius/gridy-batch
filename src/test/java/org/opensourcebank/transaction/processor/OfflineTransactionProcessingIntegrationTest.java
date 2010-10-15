@@ -16,7 +16,6 @@
 package org.opensourcebank.transaction.processor;
 
 import com.hazelcast.core.Hazelcast;
-import com.hazelcast.core.IdGenerator;
 import org.gridgain.grid.GridFactory;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -34,15 +33,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertNotNull;
 
-@ContextConfiguration(locations = {"classpath:/META-INF/conf/test-context.xml"})
+/**
+ * <p>Using {@link org.springframework.batch.item.file.FlatFileItemReader} stages transactions from a file to Hazelcast
+ *    and runs the job over multiple GridGain nodes</p>
+ *
+ * @author anatoly.polinsky
+ */
+@ContextConfiguration(locations = {"classpath:/META-INF/conf/offline-tx-processing-test-context.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class OfflineTransactionProcessingIntegrationTest {
 
@@ -66,7 +68,7 @@ public class OfflineTransactionProcessingIntegrationTest {
 
         Map<Long, ISO8583Transaction> txMap =  Hazelcast.getMap( "offline-transactions" );
 
-        //IdGenerator idGenerator = Hazelcast.getIdGenerator("customer-ids");
+        //IdGenerator idGenerator = Hazelcast.getIdGenerator("txIds");
         //long id = idGenerator.newId();
 
         ISO8583Transaction tx;
@@ -74,6 +76,7 @@ public class OfflineTransactionProcessingIntegrationTest {
 
         stagingItemReader.open( new ExecutionContext() );
         while ( ( tx = stagingItemReader.read() ) != null) {
+            // in reality here you would check if the key already exists, so the entry is not overwritten
             txMap.put( ++txId, tx );
         }
     }

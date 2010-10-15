@@ -9,10 +9,10 @@ import org.springframework.beans.factory.InitializingBean;
 public class ExampleItemReader implements ItemReader<String>, InitializingBean {
 
 	public final static String[] input =
-            { "Hi",
+            {       "Hi",
                     "Welcome to Spring Batch!",
                     "I am going to be your guide for today.",
-                    "I have Nicolas here with me",
+                    "I have an awesome batch 'step' here with me",
                     "he is going to run on one of the nodes",
                     "he dose not know it yet",
                     "but he will once it happens.",

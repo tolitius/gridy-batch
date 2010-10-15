@@ -9,7 +9,9 @@
 		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd">
 
     <import resource="classpath:/META-INF/conf/db/data-source-context.xml"/>
-    <import resource="classpath:/META-INF/conf/batch/execution-context.xml"/>
+    <import resource="classpath:/META-INF/conf/execution/execution-context.xml"/>
     <import resource="classpath:/META-INF/conf/job/offline-tx-processing-job-context.xml"/>
+
+    <context:property-placeholder system-properties-mode="OVERRIDE" location="classpath:META-INF/props/batch-${ENVIRONMENT:mysql}.properties, classpath:META-INF/props/batch-hazelcast.properties" order="1"/>
 
 </beans>

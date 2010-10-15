@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd">
+
+	<job id="job" xmlns="http://www.springframework.org/schema/batch">
+		<step id="step-master">
+			<partition handler="partitionHandler" step="step"
+				partitioner="partitioner" />
+		</step>
+	</job>
+
+	<bean id="partitionHandler"
+		class="org.springframework.batch.core.partition.gridgain.GridGainPartitionHandler" />
+
+	<bean id="partitioner"
+		class="org.opensourcebank.batch.partition.ArrayPartitioner" />
+
+	<step id="step" xmlns="http://www.springframework.org/schema/batch">
+		<tasklet>
+			<chunk commit-interval="2">
+				<reader>
+					<beans:bean class="org.opensourcebank.batch.reader.ExampleItemReader" scope="step">
+                        <beans:property name="fromIndex" value="#{stepExecutionContext[fromIndex]}"/>
+                        <beans:property name="toIndex" value="#{stepExecutionContext[toIndex]}"/>
+                    </beans:bean>
+				</reader>
+				<writer>
+					<beans:bean
+						class="org.opensourcebank.batch.writer.ExampleItemWriter" />
+				</writer>
+			</chunk>
+		</tasklet>
+	</step>
+
+</beans>

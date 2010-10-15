@@ -25,7 +25,5 @@
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-	
-	<context:property-placeholder system-properties-mode="OVERRIDE" location="classpath:META-INF/props/batch-${ENVIRONMENT:mysql}.properties" order="1"/>
 
 </beans>

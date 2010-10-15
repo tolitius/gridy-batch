@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensourcebank.hazelcast;
+package org.opensourcebank.hazelcast.playground;
 
 import com.hazelcast.config.Config;
 import com.hazelcast.config.MapConfig;
@@ -26,14 +26,17 @@ import java.util.Map;
 
 import static junit.framework.Assert.assertEquals;
 
-//@ContextConfiguration(locations = {"classpath:/META-INF/conf/test-context.xml"})
-//@RunWith(SpringJUnit4ClassRunner.class)
-public class HazelcastPlaygroundIntegrationTest {
+/**
+ * <p> Strictly for playing / experimenting purposes.. </p>
+ *
+ * @author anatoly.polinsky
+ */
+public class HazelcastPlayground {
 
 	@Test
 	public void shouldShareMapBetweenTwoClusterMembers() throws Exception {
         // start the first member
-        //HazelcastInstance h1 = Hazelcast.newHazelcastInstance(null);
+        HazelcastInstance h1 = Hazelcast.newHazelcastInstance(null);
 
         // get the map and put 1000 entries
         Map map1 = Hazelcast.getMap("testmap");
