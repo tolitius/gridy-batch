@@ -9,12 +9,8 @@
 		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd">
 
     <bean id="defaultLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
-        <property name="names">
-            <list>
-                <value>TX_TYPE</value>
-                <value>TX_ID</value>
-            </list>
-        </property>
+        <property name="names" value="TX_TYPE,TX_ID"/>
+        <property name="delimiter" value=" "/>
     </bean>
 
     <bean id="transactionFileLineMapper"

@@ -8,4 +8,5 @@ import java.io.Serializable;
  * @author anatoly.polinsky
  */
 public interface ISO8583Transaction extends Serializable {
+    
 }

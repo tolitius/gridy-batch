@@ -16,6 +16,7 @@
 package org.opensourcebank.transaction.processor;
 
 import com.hazelcast.core.Hazelcast;
+import com.hazelcast.core.IdGenerator;
 import org.gridgain.grid.GridFactory;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -63,13 +64,17 @@ public class OfflineTransactionProcessingIntegrationTest {
     @Before
     public void stageTransactionsFromFileToCache() throws Exception {
 
-        List<ISO8583Transaction> txList =  Hazelcast.getList( "offline-transactions" );
+        Map<Long, ISO8583Transaction> txMap =  Hazelcast.getMap( "offline-transactions" );
+
+        //IdGenerator idGenerator = Hazelcast.getIdGenerator("customer-ids");
+        //long id = idGenerator.newId();
 
         ISO8583Transaction tx;
-        stagingItemReader.open( new ExecutionContext() );
+        Long txId = 0L;
 
+        stagingItemReader.open( new ExecutionContext() );
         while ( ( tx = stagingItemReader.read() ) != null) {
-            txList.add( tx );
+            txMap.put( ++txId, tx );
         }
     }
 
@@ -81,7 +86,7 @@ public class OfflineTransactionProcessingIntegrationTest {
 
 	@Test
 	public void shouldLaunchJob() throws Exception {
-		assertNotNull(jobLauncher.run(job,
+    		assertNotNull(jobLauncher.run(job,
                 new JobParametersBuilder().addString(
                         "run.id",
                         "offline-transaction-processing-integration.test").toJobParameters()));
@@ -94,6 +99,6 @@ public class OfflineTransactionProcessingIntegrationTest {
 
     @AfterClass
     public static void stopGridFactory() throws Exception {
-        GridFactory.stop(true);
+        GridFactory.stop( true );
     }
 }
