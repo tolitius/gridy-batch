@@ -11,11 +11,13 @@
                 <multicast-port>54327</multicast-port>
             </multicast>
             <tcp-ip enabled="false">
-                <interface>127.0.0.1</interface>
+                <interface>192.168.1.111</interface>
+                <interface>192.168.1.104</interface>                
             </tcp-ip>
         </join>
         <interfaces enabled="false">
-            <interface>10.10.1.*</interface>
+            <interface>192.168.1.111</interface>
+            <interface>192.168.1.104</interface>
         </interfaces>
         <symmetric-encryption enabled="false">
             <!--

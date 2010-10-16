@@ -30,9 +30,14 @@
                     </beans:bean>
 				</reader>
 				<writer>
-					<beans:bean class="org.opensourcebank.batch.writer.OfflineTransactionItemWriter" />
+					<beans:bean class="org.opensourcebank.batch.writer.OfflineTransactionItemWriter"/>
 				</writer>
 			</chunk>
+            <listeners>
+                <listener>
+                    <beans:bean class="org.opensourcebank.batch.listener.HazelcastTransactionItemWriteListener"/>
+                </listener>
+            </listeners>
 		</tasklet>
 	</step>
 

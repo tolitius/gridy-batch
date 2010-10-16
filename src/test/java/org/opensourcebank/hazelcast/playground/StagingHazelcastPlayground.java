@@ -17,14 +17,12 @@ package org.opensourcebank.hazelcast.playground;
 
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
-import org.opensourcebank.transaction.iso8583.ISO8583Transaction;
-import org.opensourcebank.transaction.iso8583.IssuerResponseTransaction;
+import org.opensourcebank.transaction.iso8583.Iso8583Transaction;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java.applet.AppletContext;
 import java.util.Map;
 
 /**
@@ -41,20 +39,20 @@ public class StagingHazelcastPlayground {
 
     public static void main( String arg[] ) throws Exception {
 
-        FlatFileItemReader<ISO8583Transaction> stagingItemReader;
+        FlatFileItemReader<Iso8583Transaction> stagingItemReader;
 
         ApplicationContext ac = new ClassPathXmlApplicationContext( "classpath:META-INF/conf/stage-test-data-context.xml" );
 
-        stagingItemReader = ( FlatFileItemReader<ISO8583Transaction> ) ac.getBean( "stagingItemReader" );
+        stagingItemReader = ( FlatFileItemReader<Iso8583Transaction> ) ac.getBean( "stagingItemReader" );
 
         HazelcastInstance hz = Hazelcast.init( null );
 
-        Map<Long, ISO8583Transaction> txMap =  hz.getMap( "offline-transactions" );
+        Map<Long, Iso8583Transaction> txMap =  hz.getMap( "offline-transactions" );
 
         //IdGenerator idGenerator = Hazelcast.getIdGenerator("customer-ids");
         //long id = idGenerator.newId();
 
-        ISO8583Transaction tx;
+        Iso8583Transaction tx;
         Long txId = 0L;
 
         stagingItemReader.open( new ExecutionContext() );

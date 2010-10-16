@@ -7,6 +7,6 @@ import java.io.Serializable;
  *
  * @author anatoly.polinsky
  */
-public interface ISO8583Transaction extends Serializable {
+public interface Iso8583Transaction extends Serializable {
     
 }

@@ -5,22 +5,9 @@ package org.opensourcebank.transaction.iso8583;
  *
  * @author anatoly.polinsky
  */
-public class IssuerResponseTransaction implements ISO8583Transaction {
+public class IssuerResponseTransaction  extends AbstractIso8583Transaction {
 
     private static final long serialVersionUID = -595562864790822371L;
-    
-    private Long id;
-    // ... other properties ... //
 
-    public String toString() {
-        return this.getClass().getSimpleName() + " ID:" + id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }    
+    // some relevant properties.. and accessors    
 }

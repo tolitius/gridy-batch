@@ -22,7 +22,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.opensourcebank.transaction.iso8583.ISO8583Transaction;
+import org.opensourcebank.transaction.iso8583.Iso8583Transaction;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.Step;
@@ -61,17 +61,17 @@ public class OfflineTransactionProcessingIntegrationTest {
 	private Step step;
 
     @Autowired
-    private FlatFileItemReader<ISO8583Transaction> stagingItemReader;
+    private FlatFileItemReader<Iso8583Transaction> stagingItemReader;
 
     @Before
     public void stageTransactionsFromFileToCache() throws Exception {
 
-        Map<Long, ISO8583Transaction> txMap =  Hazelcast.getMap( "offline-transactions" );
+        Map<Long, Iso8583Transaction> txMap =  Hazelcast.getMap( "offline-transactions" );
 
         //IdGenerator idGenerator = Hazelcast.getIdGenerator("txIds");
         //long id = idGenerator.newId();
 
-        ISO8583Transaction tx;
+        Iso8583Transaction tx;
         Long txId = 0L;
 
         stagingItemReader.open( new ExecutionContext() );
