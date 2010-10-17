@@ -17,13 +17,10 @@ package org.opensourcebank.transaction.processor;
 
 import com.hazelcast.core.Hazelcast;
 import org.gridgain.grid.GridFactory;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
-import org.opensourcebank.transaction.iso8583.AbstractIso8583Transaction;
 import org.opensourcebank.transaction.iso8583.Iso8583Transaction;
+import org.opensourcebank.transaction.repository.Iso8583TransactionRepository;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.Step;
@@ -34,8 +31,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.Map;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -49,61 +44,58 @@ import static org.junit.Assert.assertNotNull;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class OfflineTransactionProcessingIntegrationTest {
 
-	static {
-    	System.setProperty( "GRIDGAIN_HOME", "/opt/gridgain" );
-	}
-
 	@Autowired
 	private JobLauncher jobLauncher;
 	@Autowired
 	private Job job;
-	@Autowired
-	@Qualifier("step")
-	private Step step;
 
     @Autowired
     private FlatFileItemReader<Iso8583Transaction> stagingItemReader;
+    @Autowired
+    private Iso8583TransactionRepository iso8583TransactionRepository;
 
     @Before
     public void stageTransactionsFromFileToCache() throws Exception {
-
-        Map<Long, Iso8583Transaction> txMap =  Hazelcast.getMap( "offline-transactions" );
 
         //IdGenerator idGenerator = Hazelcast.getIdGenerator("txIds");
         //long id = idGenerator.newId();
 
         Iso8583Transaction tx;
-        Long txId = 0L;
 
         stagingItemReader.open( new ExecutionContext() );
         while ( ( tx = stagingItemReader.read() ) != null) {
-            ( ( AbstractIso8583Transaction ) tx).setId( ++txId );
-            txMap.put( txId, tx );
+            iso8583TransactionRepository.create( tx );
         }
     }
 
 	@Test
-	public void shouldAutowireJobLauncherAndStep() throws Exception {
-		assertNotNull(jobLauncher);
-		assertNotNull(step);
-	}
-
-	@Test
 	public void shouldLaunchJob() throws Exception {
-    		assertNotNull(jobLauncher.run(job,
+    		assertNotNull( jobLauncher.run( job,
                 new JobParametersBuilder().addString(
                         "run.id",
-                        "offline-transaction-processing-integration.test").toJobParameters()));
+                        "offline-transaction-processing-integration.test" ).toJobParameters() ) );
 	}
 
     @BeforeClass
     public static void startGridFactory() throws Exception {
+        System.setProperty( "GRIDGAIN_HOME", "/opt/gridgain" );        
         GridFactory.start();
     }
 
     @AfterClass
     public static void stopGridFactory() throws Exception {
         GridFactory.stop( true );
-        //Hazelcast.shutdownAll();
+    }
+
+    @After
+    public void emptyTransactionRepository() throws Exception {
+
+        long repoSize = iso8583TransactionRepository.size();
+        
+        // this test will always start with an empty map, hence the first ID is 0
+        for ( long id = 0; id < repoSize; id++ ) {
+            Iso8583Transaction tx = iso8583TransactionRepository.findById( id );
+            iso8583TransactionRepository.delete( tx );
+        }
     }
 }

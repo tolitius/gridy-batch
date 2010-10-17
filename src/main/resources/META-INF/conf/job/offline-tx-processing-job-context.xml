@@ -5,9 +5,11 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd">
 
+    <import resource="classpath:META-INF/conf/transaction/repository/iso8583transaction-repository-context.xml"/>
+
 	<job id="job" xmlns="http://www.springframework.org/schema/batch">
 		<step id="step-master">
-			<partition handler="partitionHandler" step="step" partitioner="partitioner"/>
+			<partition handler="partitionHandler" step="txProcessingStep" partitioner="partitioner"/>
 		</step>
 	</job>
 
@@ -19,9 +21,9 @@
         <property name="mapName" value="${batch.hazelcast.map.name}"/>
     </bean>
 
-	<step id="step" xmlns="http://www.springframework.org/schema/batch">
+	<step id="txProcessingStep" xmlns="http://www.springframework.org/schema/batch">
 		<tasklet>
-			<chunk commit-interval="5">
+			<chunk commit-interval="3">
 				<reader>
 					<beans:bean class="org.opensourcebank.batch.reader.HazelcastMapItemReader" scope="step">
                         <beans:property name="mapName" value="#{stepExecutionContext[mapName]}"/>                        
@@ -30,15 +32,15 @@
                     </beans:bean>
 				</reader>
 				<writer>
-					<beans:bean class="org.opensourcebank.batch.writer.OfflineTransactionItemWriter" scope="step">
-                        <beans:property name="mapName" value="#{stepExecutionContext[mapName]}"/>
+					<beans:bean class="org.opensourcebank.batch.writer.OfflineTransactionItemWriter">
+                        <beans:property name="transactionRepository" ref="hazelcastIso8583TransactionRepository"/>
                     </beans:bean>
 				</writer>
 			</chunk>
             <listeners>
                 <listener>
-                    <beans:bean class="org.opensourcebank.batch.listener.HazelcastTransactionItemWriteListener" scope="step">
-                        <beans:property name="mapName" value="#{stepExecutionContext[mapName]}"/>
+                    <beans:bean class="org.opensourcebank.batch.listener.HazelcastTransactionItemWriteListener">
+                        <beans:property name="transactionRepository" ref="hazelcastIso8583TransactionRepository"/>
                     </beans:bean>
                 </listener>
                 <listener>

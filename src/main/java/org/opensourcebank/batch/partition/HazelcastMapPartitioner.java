@@ -29,9 +29,14 @@ public class HazelcastMapPartitioner implements Partitioner, InitializingBean {
         Map<Long, Object> itemsMap = Hazelcast.getMap( mapName );
         Set<Long> itemsIds= itemsMap.keySet();
 
-        long min = Collections.min( itemsIds );
-        long max = Collections.max( itemsIds );
+        long min = 0;
+        long max = 0;
 
+        if ( itemsIds.size() > 0 ) {
+            min = Collections.min( itemsIds );
+            max = Collections.max( itemsIds );
+        }
+        
 		long targetSize = (max - min) / gridSize + 1;
 
 		Map<String, ExecutionContext> result = new HashMap<String, ExecutionContext>();
