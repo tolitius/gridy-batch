@@ -17,7 +17,7 @@ public class IssuerResponseTransactionFieldSetMapper implements FieldSetMapper<I
 
         IssuerResponseTransaction transaction = new IssuerResponseTransaction();
 
-        transaction.setId( fieldSet.readLong( "TX_ID" ) );
+        transaction.setExternalId( fieldSet.readLong( "TX_EXTERNAL_ID" ) );
 
         return transaction;
     }

@@ -22,6 +22,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.opensourcebank.transaction.iso8583.AbstractIso8583Transaction;
 import org.opensourcebank.transaction.iso8583.Iso8583Transaction;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParametersBuilder;
@@ -76,8 +77,8 @@ public class OfflineTransactionProcessingIntegrationTest {
 
         stagingItemReader.open( new ExecutionContext() );
         while ( ( tx = stagingItemReader.read() ) != null) {
-            // in reality here you would check if the key already exists, so the entry is not overwritten
-            txMap.put( ++txId, tx );
+            ( ( AbstractIso8583Transaction ) tx).setId( ++txId );
+            txMap.put( txId, tx );
         }
     }
 
@@ -103,5 +104,6 @@ public class OfflineTransactionProcessingIntegrationTest {
     @AfterClass
     public static void stopGridFactory() throws Exception {
         GridFactory.stop( true );
+        //Hazelcast.shutdownAll();
     }
 }

@@ -30,12 +30,21 @@
                     </beans:bean>
 				</reader>
 				<writer>
-					<beans:bean class="org.opensourcebank.batch.writer.OfflineTransactionItemWriter"/>
+					<beans:bean class="org.opensourcebank.batch.writer.OfflineTransactionItemWriter" scope="step">
+                        <beans:property name="mapName" value="#{stepExecutionContext[mapName]}"/>
+                    </beans:bean>
 				</writer>
 			</chunk>
             <listeners>
                 <listener>
-                    <beans:bean class="org.opensourcebank.batch.listener.HazelcastTransactionItemWriteListener"/>
+                    <beans:bean class="org.opensourcebank.batch.listener.HazelcastTransactionItemWriteListener" scope="step">
+                        <beans:property name="mapName" value="#{stepExecutionContext[mapName]}"/>
+                    </beans:bean>
+                </listener>
+                <listener>
+                    <beans:bean class="org.opensourcebank.batch.listener.TransactionProcessingReportStepListener" scope="step">
+                        <beans:property name="mapName" value="#{stepExecutionContext[mapName]}"/>
+                    </beans:bean>
                 </listener>
             </listeners>
 		</tasklet>

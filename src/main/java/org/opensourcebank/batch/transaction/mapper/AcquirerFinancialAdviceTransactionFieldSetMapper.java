@@ -17,7 +17,7 @@ public class AcquirerFinancialAdviceTransactionFieldSetMapper implements FieldSe
 
         AcquirerFinancialAdviceTransaction transaction = new AcquirerFinancialAdviceTransaction();
 
-        transaction.setId( fieldSet.readLong( "TX_ID" ) );
+        transaction.setExternalId( fieldSet.readLong( "TX_EXTERNAL_ID" ) );
 
         return transaction;
     }

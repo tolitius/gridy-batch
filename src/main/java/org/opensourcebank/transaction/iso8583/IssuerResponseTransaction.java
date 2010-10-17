@@ -9,5 +9,13 @@ public class IssuerResponseTransaction  extends AbstractIso8583Transaction {
 
     private static final long serialVersionUID = -595562864790822371L;
 
-    // some relevant properties.. and accessors    
+    // some relevant properties.. and accessors
+
+    @Override
+    public String toString() {
+        return "| ID: " + getId() + " \t| " +
+                this.getClass().getSimpleName() + "\t\t| external ID: " + getExternalId() + " | " +
+                getStatus() + "\t| ";
+    }
+
 }

@@ -3,13 +3,12 @@ package org.opensourcebank.batch.listener;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.Transaction;
 import org.apache.log4j.Logger;
-import org.opensourcebank.transaction.iso8583.AbstractIso8583Transaction;
 import org.opensourcebank.transaction.iso8583.Iso8583Transaction;
 import org.opensourcebank.transaction.iso8583.TransactionStatus;
+import org.opensourcebank.transaction.util.HazelcastIso8583TransactionStatusModifier;
 import org.springframework.batch.core.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>TODO: Add Description</p>
@@ -22,16 +21,16 @@ public class HazelcastTransactionItemWriteListener {
     
     private final ThreadLocal<Transaction> hzTransaction = new ThreadLocal<Transaction>();
 
+    private String mapName;
+
     @BeforeWrite
     public void beginTransaction( List<? extends Iso8583Transaction> transactions ) {
 
         hzTransaction.set(Hazelcast.getTransaction());
-        hzTransaction.get().begin();
-
-        //logger.debug("\t\n starting hz tx \n");
+        hzTransaction.get().begin();        
 
         for ( Iso8583Transaction tx: transactions ) {
-            ( ( AbstractIso8583Transaction ) tx ).setStatus( TransactionStatus.STARTING );
+            HazelcastIso8583TransactionStatusModifier.changeStatus( tx, TransactionStatus.STARTING, mapName );
         }
 
     }
@@ -43,15 +42,11 @@ public class HazelcastTransactionItemWriteListener {
 
     @AfterWrite
     public void updateStatusAndCommitTransaction( List<? extends Iso8583Transaction> transactions ) {
-
-        //logger.debug("\t\n committing hz tx \n");
         hzTransaction.get().commit();
-
-//        Map<Long, Iso8583Transaction> txMap =  Hazelcast.getMap( "offline-transactions" );
-//
-//        for ( Long id: txMap.keySet() ) {
-//            System.out.println( ">>>>>>>>> " + txMap.get( id ) );
-//        }
-        
     }
+
+    
+    public void setMapName(String mapName) {
+        this.mapName = mapName;
+    }    
 }
