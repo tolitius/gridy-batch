@@ -19,7 +19,9 @@ import com.hazelcast.core.Hazelcast;
 import org.gridgain.grid.GridFactory;
 import org.junit.*;
 import org.junit.runner.RunWith;
+import org.opensourcebank.transaction.iso8583.AbstractIso8583Transaction;
 import org.opensourcebank.transaction.iso8583.Iso8583Transaction;
+import org.opensourcebank.transaction.iso8583.TransactionStatus;
 import org.opensourcebank.transaction.repository.Iso8583TransactionRepository;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParametersBuilder;
@@ -32,6 +34,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -69,11 +72,22 @@ public class OfflineTransactionProcessingIntegrationTest {
     }
 
 	@Test
-	public void shouldLaunchJob() throws Exception {
-    		assertNotNull( jobLauncher.run( job,
-                new JobParametersBuilder().addString(
-                        "run.id",
-                        "offline-transaction-processing-integration.test" ).toJobParameters() ) );
+	public void shouldProcessAllIso8583Transactions() throws Exception {
+
+  		assertNotNull( jobLauncher.run( job, new JobParametersBuilder().addString(
+                  "run.id",
+                  "offline-transaction-processing-integration.test" ).toJobParameters() ) );
+
+        long repoSize = iso8583TransactionRepository.size();
+
+        // this test will always start with an empty map, hence the first ID is 0
+        for ( long id = 0; id < repoSize; id++ ) {
+            Iso8583Transaction tx = iso8583TransactionRepository.findById( id );
+
+            assertEquals( "transaction was not completed: [" + tx + "]",
+                    TransactionStatus.COMPLETED, ( ( AbstractIso8583Transaction ) tx ).getStatus() );
+        }
+
 	}
 
     @BeforeClass
