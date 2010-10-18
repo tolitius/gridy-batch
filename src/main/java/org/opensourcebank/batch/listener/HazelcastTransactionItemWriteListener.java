@@ -30,11 +30,18 @@ public class HazelcastTransactionItemWriteListener {
     public void beginTransaction( List<? extends Iso8583Transaction> transactions ) {
 
         hzTransaction.set(Hazelcast.getTransaction());
-        hzTransaction.get().begin();        
+        hzTransaction.get().begin();
+
 
         for ( Iso8583Transaction tx: transactions ) {
-            ( (AbstractIso8583Transaction) tx ).setStatus( TransactionStatus.STARTING );
-            transactionRepository.update( tx );
+            
+            AbstractIso8583Transaction txImpl = ( AbstractIso8583Transaction ) tx;
+
+            // if an ISO 8583 transaction was not previously completed, then it is just STARTING...
+            if ( ! TransactionStatus.COMPLETED.equals( txImpl.getStatus() ) ) {
+                txImpl.setStatus( TransactionStatus.STARTING );
+                transactionRepository.update( txImpl );
+            }
         }
     }
 

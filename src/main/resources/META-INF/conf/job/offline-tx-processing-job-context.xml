@@ -11,6 +11,13 @@
 		<step id="step-master">
 			<partition handler="partitionHandler" step="txProcessingStep" partitioner="partitioner"/>
 		</step>
+        <listeners>
+            <listener>
+                <beans:bean class="org.opensourcebank.batch.listener.TransactionProcessingReportJobListener">
+                    <beans:property name="mapName" value="${batch.hazelcast.map.name}"/>
+                </beans:bean>
+            </listener>
+        </listeners>
 	</job>
 
 	<bean id="partitionHandler"

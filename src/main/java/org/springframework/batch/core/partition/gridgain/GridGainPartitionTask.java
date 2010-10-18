@@ -56,4 +56,16 @@ public class GridGainPartitionTask extends GridTaskSplitAdapter<PartitionProvide
 		return total;
 	}
 
+    @Override
+    public GridJobResultPolicy result(GridJobResult result, List receivedResults) throws GridException {
+
+        if (result.getException() != null) {
+            // Delegate to failover SPI to pick another node.
+            log.info( "\n Trying to failover... \n" );
+            return GridJobResultPolicy.FAILOVER;
+        }
+
+        // Wait for other results to come in, or reduce if all results have arrived.
+        return GridJobResultPolicy.WAIT;
+    }
 }

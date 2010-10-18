@@ -10,6 +10,7 @@
 
     <import resource="classpath:/META-INF/conf/db/data-source-context.xml"/>
     <import resource="classpath:/META-INF/conf/execution/execution-context.xml"/>
+    <import resource="classpath:/META-INF/conf/execution/tx-management-context.xml"/>
     <import resource="classpath:/META-INF/conf/job/offline-tx-processing-job-context.xml"/>
 
     <context:property-placeholder system-properties-mode="OVERRIDE" location="classpath:META-INF/props/batch-${ENVIRONMENT:mysql}.properties, classpath:META-INF/props/batch-hazelcast.properties" order="1"/>

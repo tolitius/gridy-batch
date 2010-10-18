@@ -31,13 +31,13 @@ public class RemoteStepExecutor implements Serializable {
 		logger.info("Spring Version: " + SpringVersion.getVersion());
 		
 		try {
-			step.execute(stepExecution);
+			step.execute( stepExecution );
 		}
-		catch (JobInterruptedException e) {
+		catch ( JobInterruptedException e ) {
 			stepExecution.getJobExecution().setStatus(BatchStatus.STOPPING);
 			throw new UnexpectedJobExecutionException("TODO: this should result in a stop", e);
 		}
-
+        
 		return stepExecution;
 
 	}

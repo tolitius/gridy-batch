@@ -24,17 +24,29 @@ public class OfflineTransactionItemWriter implements ItemWriter<Iso8583Transacti
         
         for( Iso8583Transaction tx: transactions ) {
 
-            ( ( AbstractIso8583Transaction ) tx ).setStatus( TransactionStatus.IN_PROGRESS );
-            transactionRepository.update( tx );
+            AbstractIso8583Transaction txImpl = ( AbstractIso8583Transaction ) tx;
 
-            //log.info("\t\n" + tx + "\n");
-            System.out.println( "\t" + tx );
+            // make sure we do not process COMPLETED transactions twice
+            // this is here for a fail over since step execution context will not change ( e.g. "process from X to Y" )
+            // ideally should be done in a reader
+            if ( ! TransactionStatus.COMPLETED.equals( txImpl.getStatus() ) ) {
 
-            // do some business heavy lifting...
-            //Thread.sleep( 5000 );
+                txImpl.setStatus( TransactionStatus.IN_PROGRESS );
+                transactionRepository.update( txImpl );
 
-            ( ( AbstractIso8583Transaction ) tx ).setStatus( TransactionStatus.COMPLETED );
-            transactionRepository.update( tx );
+                //log.info("\n" + tx + "\n");
+                System.out.println( "\t" + tx );
+
+                // do some business heavy lifting...
+                Thread.sleep( 5000 );
+
+                txImpl.setStatus( TransactionStatus.COMPLETED );
+                transactionRepository.update( txImpl );
+            }
+            else {
+                //log.info( "Ignoring an already COMPLETED transaction: " + tx );
+                System.out.println( "\t Ignoring an already COMPLETED transaction: " + tx );                
+            }
         }
 	}
 
