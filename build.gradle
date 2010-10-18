@@ -40,8 +40,13 @@ dependencies {
         [group: 'log4j', name: 'log4j', version: '1.2.15' ],
 
         fileTree( dir: gridgainHome + '/libs', include: '*.jar' ),
-        fileTree( dir: gridgainHome, include: 'gridgain-' + gridgainVerion + '.jar' )
+        fileTree( dir: gridgainHome, include: 'gridgain-'+ gridgainVerion + '.jar' )
     )
 
     testCompile group: 'junit', name: 'junit', version: '4.+'
+
+}
+
+test {  
+    outputs.upToDateWhen { false }
 }
