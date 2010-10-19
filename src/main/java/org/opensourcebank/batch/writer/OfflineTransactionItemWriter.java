@@ -38,7 +38,7 @@ public class OfflineTransactionItemWriter implements ItemWriter<Iso8583Transacti
                 System.out.println( "\t" + tx );
 
                 // do some business heavy lifting...
-                Thread.sleep( 5000 );
+                //Thread.sleep( 5000 );
 
                 txImpl.setStatus( TransactionStatus.COMPLETED );
                 transactionRepository.update( txImpl );
