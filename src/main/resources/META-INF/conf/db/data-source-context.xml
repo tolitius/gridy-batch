@@ -11,7 +11,6 @@
 	<jdbc:initialize-database data-source="dataSource" enabled="${batch.data.source.init}" ignore-failures="DROPS">
 		<jdbc:script location="${batch.drop.script}"/>
 		<jdbc:script location="${batch.schema.script}"/>
-		<!-- <jdbc:script location="${batch.business.schema.script}"/> -->
 	</jdbc:initialize-database>
 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
