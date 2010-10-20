@@ -20,13 +20,12 @@
         </listeners>
 	</job>
 
-	<bean id="partitionHandler"
-		  class="org.springframework.batch.core.partition.gridgain.GridGainPartitionHandler" />
+	<!--<bean id="partitionHandler"-->
+		  <!--class="org.springframework.batch.core.partition.gridgain.GridGainPartitionHandler" />-->
 
     <!--Scalar Partition Handler-->
-
-	<!--<bean id="partitionHandler"-->
-		  <!--class="org.springframework.batch.core.partition.gridgain.scalar.GridGainPartitionHandler" />-->
+	<bean id="partitionHandler"
+		  class="org.opensourcebank.batch.partition.GridGainPartitionHandler" />
 
 	<bean id="partitioner"
 		  class="org.opensourcebank.batch.partition.HazelcastMapPartitioner">

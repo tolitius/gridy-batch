@@ -46,4 +46,11 @@ public class RemoteStepExecutor implements Serializable {
 		return stepName;
 	}
 
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + ": " +
+                "step name [" + this.getStepName() + "], " +
+                "step execution [ " + this.stepExecution + " ], " +
+                "configuration [ " + this.configLocation + " ]";
+    }
 }
