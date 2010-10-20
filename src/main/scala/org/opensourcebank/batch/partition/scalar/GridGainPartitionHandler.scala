@@ -1,4 +1,4 @@
-package org.opensourcebank.batch.partition
+package org.opensourcebank.batch.partition.scalar
 
 import org.springframework.batch.core.partition.gridgain.{RemoteStepExecutor}
 
@@ -34,7 +34,7 @@ import scalar._
  * @author anatoly.polinsky
  *
  **/
-class GridGainPartitionHandler( jobSpringConfigLocation: String ) extends PartitionHandler {
+class ScalarPartitionHandler( jobSpringConfigLocation: String ) extends PartitionHandler {
 
   /**
    * <p>Iterates over step executors and submits them as grid workers to available nodes in round robin fashion</p>

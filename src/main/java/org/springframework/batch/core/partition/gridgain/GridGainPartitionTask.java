@@ -30,7 +30,7 @@ public class GridGainPartitionTask extends GridTaskSplitAdapter<PartitionProvide
 		try {
 			for (final StepExecution stepExecution : stepSplit.getStepExecutions(gridSize)) {
 
-				RemoteStepExecutor stepExecutor = new RemoteStepExecutor("META-INF/conf/launch-context.xml", stepName, stepExecution);
+				RemoteStepExecutor stepExecutor = new RemoteStepExecutor("META-INF/conf/gridgain/with-gridgain-launch-context.xml", stepName, stepExecution);
 				jobs.add(new GridJobAdapterEx(stepExecutor) {
 					public Serializable execute() {
 						RemoteStepExecutor stepExecutor = argument();
@@ -60,6 +60,7 @@ public class GridGainPartitionTask extends GridTaskSplitAdapter<PartitionProvide
     public GridJobResultPolicy result(GridJobResult result, List receivedResults) throws GridException {
 
         if (result.getException() != null) {
+            
             // Delegate to failover SPI to pick another node.
             log.info( "\n Trying to failover... \n" );
             return GridJobResultPolicy.FAILOVER;

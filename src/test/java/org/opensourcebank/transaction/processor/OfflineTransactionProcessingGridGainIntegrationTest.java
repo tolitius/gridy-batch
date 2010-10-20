@@ -15,6 +15,7 @@
  */
 package org.opensourcebank.transaction.processor;
 
+import org.gridgain.grid.GridFactory;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.opensourcebank.transaction.iso8583.AbstractIso8583Transaction;
@@ -40,9 +41,9 @@ import static org.junit.Assert.assertNotNull;
  * @author anatoly.polinsky
  */
 @ContextConfiguration(locations = {"classpath:/META-INF/conf/offline-tx-processing-test-context.xml",
-                                   "classpath:/META-INF/conf/scalar/with-scalar-launch-context.xml"})
+                                   "classpath:/META-INF/conf/gridgain/with-gridgain-launch-context.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
-public class OfflineTransactionProcessingScalarIntegrationTest {
+public class OfflineTransactionProcessingGridGainIntegrationTest {
 
 	@Autowired
 	private JobLauncher jobLauncher;
@@ -90,12 +91,12 @@ public class OfflineTransactionProcessingScalarIntegrationTest {
     @BeforeClass
     public static void startGridFactory() throws Exception {
         System.setProperty( "GRIDGAIN_HOME", "/opt/gridgain" );        
-        //GridFactory.start();
+        GridFactory.start();
     }
 
     @AfterClass
     public static void stopGridFactory() throws Exception {
-        //GridFactory.stop( true );
+        GridFactory.stop( true );
     }
 
     @After

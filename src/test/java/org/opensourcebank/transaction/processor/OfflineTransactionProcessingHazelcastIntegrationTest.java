@@ -15,7 +15,6 @@
  */
 package org.opensourcebank.transaction.processor;
 
-import com.hazelcast.core.Hazelcast;
 import org.gridgain.grid.GridFactory;
 import org.junit.*;
 import org.junit.runner.RunWith;
@@ -25,12 +24,10 @@ import org.opensourcebank.transaction.iso8583.TransactionStatus;
 import org.opensourcebank.transaction.repository.Iso8583TransactionRepository;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParametersBuilder;
-import org.springframework.batch.core.Step;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -43,9 +40,10 @@ import static org.junit.Assert.assertNotNull;
  *
  * @author anatoly.polinsky
  */
-@ContextConfiguration(locations = {"classpath:/META-INF/conf/offline-tx-processing-test-context.xml"})
+@ContextConfiguration(locations = {"classpath:/META-INF/conf/offline-tx-processing-test-context.xml",
+                                   "classpath:/META-INF/conf/hazelcast/with-hazelcast-launch-context.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
-public class OfflineTransactionProcessingIntegrationTest {
+public class OfflineTransactionProcessingHazelcastIntegrationTest {
 
 	@Autowired
 	private JobLauncher jobLauncher;
