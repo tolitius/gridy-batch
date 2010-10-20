@@ -25,7 +25,9 @@
 
     <!--Scalar Partition Handler-->
 	<bean id="partitionHandler"
-		  class="org.opensourcebank.batch.partition.GridGainPartitionHandler" />
+		  class="org.opensourcebank.batch.partition.GridGainPartitionHandler">
+        <constructor-arg value="classpath:META-INF/conf/launch-context.xml"/>
+    </bean>
 
 	<bean id="partitioner"
 		  class="org.opensourcebank.batch.partition.HazelcastMapPartitioner">

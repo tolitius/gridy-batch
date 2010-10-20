@@ -1,11 +1,10 @@
 package org.opensourcebank.batch.partition
 
-import org.springframework.batch.core.partition.gridgain.{RemoteStepExecutor, PartitionProvider}
+import org.springframework.batch.core.partition.gridgain.{RemoteStepExecutor}
 
 import org.springframework.batch.core.StepExecution
 
 import org.springframework.batch.core.partition.PartitionHandler
-import collection.mutable.HashSet;
 import org.springframework.batch.core.partition.StepExecutionSplitter;
 
 import scala.collection.jcl.Conversions.unconvertList
@@ -13,8 +12,6 @@ import scala.collection.jcl.ArrayList
 
 import org.gridgain.scalar.scalar
 import scalar._
-import org.gridgain.grid.lang.{GridFunc => F}
-import org.gridgain.grid.GridRichNode
 
 /**
  * <p>Implements a "
@@ -37,7 +34,7 @@ import org.gridgain.grid.GridRichNode
  * @author anatoly.polinsky
  *
  **/
-class GridGainPartitionHandler extends PartitionHandler {
+class GridGainPartitionHandler( jobSpringConfigLocation: String ) extends PartitionHandler {
 
   /**
    * <p>Iterates over step executors and submits them as grid workers to available nodes in round robin fashion</p>
@@ -75,7 +72,7 @@ class GridGainPartitionHandler extends PartitionHandler {
 
        for ( stepExecution <- stepExecutionsScalaSet ) {
 
-         val rex: RemoteStepExecutor = new RemoteStepExecutor( "META-INF/conf/launch-context.xml",
+         val rex: RemoteStepExecutor = new RemoteStepExecutor( jobSpringConfigLocation,
                                                                stepSplitter.getStepName,
                                                                stepExecution )
          stepExecutors ::= rex
