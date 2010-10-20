@@ -1,7 +1,6 @@
 .idea/*
 *.swp
 *.class
-*.iml
 *.ipr
 *.iws
 .gradle
