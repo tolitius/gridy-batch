@@ -8,7 +8,7 @@ A reference application that demonstrates:
 
 + Spring Batch partitioning / commit interval
 
-+ GridGain zero deploy / fail over
++ GridGain zero deployment / fail over
 
 + GridGain ScalaR
 
