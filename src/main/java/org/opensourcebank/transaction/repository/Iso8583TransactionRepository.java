@@ -3,7 +3,7 @@ package org.opensourcebank.transaction.repository;
 import org.opensourcebank.transaction.iso8583.Iso8583Transaction;
 
 /**
- * <p>TODO: Add Description</p>
+ * <p>ISO 8583 transaction persistence strategy interface</p>
  *
  * @author anatoly.polinsky
  */

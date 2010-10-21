@@ -8,7 +8,9 @@ import org.springframework.batch.core.partition.PartitionHandler;
 import org.springframework.batch.core.partition.StepExecutionSplitter;
 
 import java.util.Collection;
-
+/**
+ * @author Dave Syer
+ */
 public class GridGainPartitionHandler implements PartitionHandler {
 
 	public Collection<StepExecution> handle(StepExecutionSplitter stepSplitter, StepExecution stepExecution) throws Exception {

@@ -11,6 +11,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * <p>10/21/2010 Anatoly: upgraded to GridGain 3.0.0 APIs, and added a fail over capability for user exceptions.</p>
+ *
+ * @author Dave Syer
+ * @author anatoly.polinsky
+ */
 public class GridGainPartitionTask extends GridTaskSplitAdapter<PartitionProvider, Collection<StepExecution>> {
 
 	@GridLoggerResource

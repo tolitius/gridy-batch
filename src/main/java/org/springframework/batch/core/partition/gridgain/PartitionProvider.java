@@ -6,6 +6,9 @@ import org.springframework.batch.core.partition.StepExecutionSplitter;
 
 import java.util.Set;
 
+/**
+ * @author Dave Syer
+ */
 public class PartitionProvider {
 
 	private final StepExecutionSplitter stepSplitter;

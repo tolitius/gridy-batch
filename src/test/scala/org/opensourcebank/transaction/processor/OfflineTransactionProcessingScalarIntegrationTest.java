@@ -37,6 +37,8 @@ import static org.junit.Assert.assertNotNull;
  * <p>Using {@link org.springframework.batch.item.file.FlatFileItemReader} stages transactions from a file to Hazelcast
  *    and runs the job over multiple GridGain nodes</p>
  *
+ * <p>This test was meant to be written in Scala, hence it lives under scala sources</p>
+ *
  * @author anatoly.polinsky
  */
 @ContextConfiguration(locations = {"classpath:/META-INF/conf/offline-tx-processing-test-context.xml",
@@ -89,13 +91,7 @@ public class OfflineTransactionProcessingScalarIntegrationTest {
 
     @BeforeClass
     public static void startGridFactory() throws Exception {
-        System.setProperty( "GRIDGAIN_HOME", "/opt/gridgain" );        
-        //GridFactory.start();
-    }
-
-    @AfterClass
-    public static void stopGridFactory() throws Exception {
-        //GridFactory.stop( true );
+        System.setProperty( "GRIDGAIN_HOME", "/opt/gridgain" );
     }
 
     @After

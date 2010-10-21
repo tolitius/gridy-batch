@@ -9,7 +9,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * <p>TODO: Add description</p>
+ * <p>An {@link ItemReader} that given a map name, pulls data item by item from a Hazelcast (distributed) Map.</p>
+ *
+ * <p>This reader makes two assumptions:
+ *
+ *                1. Keys are {@link Long},
+ *                2. Keys are sequential ( 4,5,6,7,8,9,10,11, etc.. )</p>
  *
  * @author anatoly.polinsky
  */

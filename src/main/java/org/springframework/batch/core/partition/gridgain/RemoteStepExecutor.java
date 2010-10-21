@@ -8,6 +8,9 @@ import org.springframework.core.SpringVersion;
 
 import java.io.Serializable;
 
+/** 
+ * @author Dave Syer
+ */
 public class RemoteStepExecutor implements Serializable {
 	
 	private Log logger = LogFactory.getLog(getClass());

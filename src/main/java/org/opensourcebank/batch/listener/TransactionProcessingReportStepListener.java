@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 
 /**
- * <p>TODO: Add Description</p>
+ * <p>Displays a header / footer and reports all the transaction statuses after step is completed</p>
  *
  * @author anatoly.polinsky
  */
@@ -29,6 +29,7 @@ public class TransactionProcessingReportStepListener {
 
     @BeforeStep
     public void showProcessingReportHeader( StepExecution stepExecution ){
+
         System.out.println( "\nProcessing Transactions:" );
         System.out.println( "----------------------------------------------------" +
                 "----------------------------------------------" );

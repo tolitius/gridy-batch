@@ -1,7 +1,7 @@
 package org.opensourcebank.transaction.iso8583;
 
 /**
- * <p>TODO: Add Description</p>
+ * <p>An abstraction that ensures that all the ISO 8583 transactions have ID and STATUS</p>
  *
  * @author anatoly.polinsky
  */

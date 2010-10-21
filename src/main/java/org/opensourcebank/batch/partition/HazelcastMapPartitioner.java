@@ -1,4 +1,4 @@
-package org.opensourcebank.batch.partition.hazelcast;
+package org.opensourcebank.batch.partition;
 
 import com.hazelcast.core.Hazelcast;
 import org.springframework.batch.core.partition.support.Partitioner;

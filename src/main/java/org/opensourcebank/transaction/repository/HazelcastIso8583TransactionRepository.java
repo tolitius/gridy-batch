@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.locks.Lock;
 
 /**
- * <p>TODO: Add Description</p>
+ * <p>ISO 8583 transaction Hazelcast CRUD repository</p>
  *
  * @author anatoly.polinsky
  */

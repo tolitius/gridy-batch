@@ -1,7 +1,7 @@
 package org.opensourcebank.transaction.iso8583;
 
 /**
- * <p>TODO: Add Description</p>
+ * <p>ISO 8583 transaction status that reflects a runtime / last known transaction state</p>
  *
  * @author anatoly.polinsky
  */

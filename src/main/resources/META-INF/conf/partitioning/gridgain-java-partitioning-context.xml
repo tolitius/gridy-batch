@@ -7,7 +7,7 @@
           class="org.springframework.batch.core.partition.gridgain.GridGainPartitionHandler" />
 
     <bean id="partitioner"
-          class="org.opensourcebank.batch.partition.hazelcast.HazelcastMapPartitioner">
+          class="org.opensourcebank.batch.partition.HazelcastMapPartitioner">
         <property name="mapName" value="${batch.hazelcast.map.name}"/>
     </bean>
 

@@ -15,6 +15,8 @@
  */
 package org.opensourcebank.transaction.processor;
 
+import com.hazelcast.core.Hazelcast;
+import com.hazelcast.core.HazelcastInstance;
 import org.gridgain.grid.GridFactory;
 import org.junit.*;
 import org.junit.runner.RunWith;
@@ -36,7 +38,7 @@ import static org.junit.Assert.assertNotNull;
 
 /**
  * <p>Using {@link org.springframework.batch.item.file.FlatFileItemReader} stages transactions from a file to Hazelcast
- *    and runs the job over multiple GridGain nodes</p>
+ *    and runs the job over multiple Hazelcast nodes</p>
  *
  * @author anatoly.polinsky
  */
@@ -87,17 +89,6 @@ public class OfflineTransactionProcessingHazelcastIntegrationTest {
         }
 
 	}
-
-    @BeforeClass
-    public static void startGridFactory() throws Exception {
-        System.setProperty( "GRIDGAIN_HOME", "/opt/gridgain" );        
-        GridFactory.start();
-    }
-
-    @AfterClass
-    public static void stopGridFactory() throws Exception {
-        GridFactory.stop( true );
-    }
 
     @After
     public void emptyTransactionRepository() throws Exception {

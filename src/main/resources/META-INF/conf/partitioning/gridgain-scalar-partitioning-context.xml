@@ -5,12 +5,12 @@
 
     <!--Scalar Partition Handler-->
 	<bean id="partitionHandler"
-		  class="org.opensourcebank.batch.partition.scalar.ScalarPartitionHandler">
+		  class="org.opensourcebank.batch.partition.handler.scalar.ScalarPartitionHandler">
         <constructor-arg value="classpath:META-INF/conf/scalar/with-scalar-launch-context.xml"/>
     </bean>
 
     <bean id="partitioner"
-          class="org.opensourcebank.batch.partition.hazelcast.HazelcastMapPartitioner">
+          class="org.opensourcebank.batch.partition.HazelcastMapPartitioner">
         <property name="mapName" value="${batch.hazelcast.map.name}"/>
     </bean>
 

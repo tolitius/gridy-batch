@@ -5,12 +5,12 @@
 
     <!--Hazelcast Partition Handler-->
 	<bean id="partitionHandler"
-		  class="org.opensourcebank.batch.partition.GridGainPartitionHandler">
+		  class="org.opensourcebank.batch.partition.handler.hazelcast.HazelcastPartitionHandler">
         <constructor-arg value="classpath:META-INF/conf/hazelcast/with-hazelcast-launch-context.xml"/>
     </bean>
 
     <bean id="partitioner"
-          class="org.opensourcebank.batch.partition.hazelcast.HazelcastMapPartitioner">
+          class="org.opensourcebank.batch.partition.HazelcastMapPartitioner">
         <property name="mapName" value="${batch.hazelcast.map.name}"/>
     </bean>
 

@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * <p>TODO: Add Description</p>
+ * <p>Reports all the transaction statuses after the job was completed</p>
  *
  * @author anatoly.polinsky
  */

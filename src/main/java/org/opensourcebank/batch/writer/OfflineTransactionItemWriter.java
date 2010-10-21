@@ -12,7 +12,7 @@ import org.springframework.batch.item.ItemWriter;
 import java.util.List;
 
 /**
- * Dummy {@link org.springframework.batch.item.ItemWriter} which only logs data it receives.
+ * Dummy {@link org.springframework.batch.item.ItemWriter} which just logs data it receives.
  */
 public class OfflineTransactionItemWriter implements ItemWriter<Iso8583Transaction> {
 
@@ -38,7 +38,7 @@ public class OfflineTransactionItemWriter implements ItemWriter<Iso8583Transacti
                 System.out.println( "\t" + tx );
 
                 // do some business heavy lifting...
-                Thread.sleep( 10000 );
+                //Thread.sleep( 10000 );
 
                 txImpl.setStatus( TransactionStatus.COMPLETED );
                 transactionRepository.update( txImpl );

@@ -1,11 +1,12 @@
-package org.opensourcebank.batch.partition.scalar
+package org.opensourcebank.batch.partition.handler.scalar
 
 import org.springframework.batch.core.partition.gridgain.{RemoteStepExecutor}
 
 import org.springframework.batch.core.StepExecution
 
 import org.springframework.batch.core.partition.PartitionHandler
-import org.springframework.batch.core.partition.StepExecutionSplitter;
+import org.springframework.batch.core.partition.StepExecutionSplitter
+import org.opensourcebank.batch.partition.splitter.StepExecutorSplitter;
 
 import scala.collection.jcl.Conversions.unconvertList
 import scala.collection.jcl.ArrayList
@@ -48,37 +49,16 @@ class ScalarPartitionHandler( jobSpringConfigLocation: String ) extends Partitio
       grid !*~ (
 
               // map
-              for ( stepExecutor <- createRemoteStepExecutors ( stepExecution, stepSplitter, grid.size( null ) ) )
+              for ( stepExecutor <- StepExecutorSplitter.createRemoteStepExecutors ( stepExecution,
+                                                                                     stepSplitter,
+                                                                                     jobSpringConfigLocation,
+                                                                                     grid.size( null ) ) )
+
               yield () => { stepExecutor.execute() },
 
               // reduce              
               ( se: Seq[ StepExecution ] ) => { unconvertList( new ArrayList ++ se ) }              
       )
     }
-  }
-
-  /**
-   * <p> Given a grid size that is available at runtime from Gridgain and a custom partitioner injected to the step,
-   *     call a step execution splitter, and using the result Set of multiple step executions creates and returns
-   *     a collection of step executors (to be passed on to multiple computing nodes) </p>
-   */
-  def createRemoteStepExecutors( stepExecution: StepExecution, stepSplitter: StepExecutionSplitter, gridSize: Int ) = {
-
-       var stepExecutors: List[RemoteStepExecutor] = List()
-
-       // splitting step executions and converting a result java.util.Set to a Scala immutable Set:
-       val stepExecutionsJavaSet: java.util.Set[StepExecution] = stepSplitter.split( stepExecution, gridSize )
-       val stepExecutionsScalaSet: Set[StepExecution] = Set( stepExecutionsJavaSet.toArray(new Array[StepExecution](0)) : _* )
-
-       for ( stepExecution <- stepExecutionsScalaSet ) {
-
-         val rex: RemoteStepExecutor = new RemoteStepExecutor( jobSpringConfigLocation,
-                                                               stepSplitter.getStepName,
-                                                               stepExecution )
-         stepExecutors ::= rex
-
-       }
-
-       stepExecutors
   }
 }

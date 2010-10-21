@@ -13,7 +13,9 @@ import org.springframework.batch.core.annotation.*;
 import java.util.List;
 
 /**
- * <p>TODO: Add Description</p>
+ * <p>Since {@link org.springframework.batch.item.ItemWriter} encapsulates a collection of items that represent a commit
+ *    interval chunk,it is an ideal place to manage Hazelcast transactions, and set an initial / pre-process transaction
+ *    statuses</p>
  *
  * @author anatoly.polinsky
  */
@@ -31,7 +33,6 @@ public class HazelcastTransactionItemWriteListener {
 
         hzTransaction.set(Hazelcast.getTransaction());
         hzTransaction.get().begin();
-
 
         for ( Iso8583Transaction tx: transactions ) {
             
@@ -53,6 +54,7 @@ public class HazelcastTransactionItemWriteListener {
     @AfterWrite
     public void updateStatusAndCommitTransaction( List<? extends Iso8583Transaction> transactions ) {
         hzTransaction.get().commit();
+        System.out.println( "\n===============================  * committed *  =================================\n" );
     }
 
     
