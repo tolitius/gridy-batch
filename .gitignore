@@ -9,3 +9,4 @@
 .settings
 target/*
 build/*
+!gradle-wrapper.jar
