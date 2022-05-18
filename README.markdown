@@ -1,4 +1,4 @@
-## What is "Gridy Batch"? ##
+## what is "gridy batch"? ##
 
 A reference application that demonstrates:
 
@@ -21,3 +21,9 @@ A reference application that demonstrates:
 + partitioning over Hazelcast by submitting distributed tasks via java.util.concurrent.ExecutorService
 
 + Gradle
+
+
+## what's with the name?
+
+batch jobs on a grid.. but<br>
+as [@danielmiladinov](https://github.com/danielmiladinov) pointed out, it does pay respect to [Grady Booch](https://en.wikipedia.org/wiki/Grady_Booch)
